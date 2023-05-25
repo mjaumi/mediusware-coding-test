@@ -1,11 +1,51 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 
 const Problem1 = () => {
 
     const [show, setShow] = useState('all');
+    
+    // react hook to store all the tasks
+    const [tasks, setTasks] = useState([]);
+
+    // react hooks to control the form values
+    const [name, setName] = useState('');
+    const [status, setStatus] = useState('');
 
     const handleClick = (val) =>{
         setShow(val);
+    }
+
+    // handler function to submit the task data
+    const submitTaskHandler = e => {
+        e.preventDefault();
+
+        setTasks([...tasks, {
+            name,
+            status
+        }]);
+
+        // resetting the form after submission here 
+        setName('');
+        setStatus('');
+    }
+
+    // function to sort the tasks when all button is clicked
+    const sortTask = status => {
+        if(status.toLowerCase() === 'active'){
+            return 0;
+        } else if(status.toLowerCase() === 'completed'){
+            return 1;
+        } else {   
+            return 2;
+        }
+    }
+
+    if(show === 'all'){
+        tasks.sort((task1, task2) => sortTask(task1.status) -  sortTask(task2.status));
+    } 
+
+    const filterTasks = task => {
+        return show === 'active' ? task.status.toLowerCase() === 'active' : show === 'completed' ? task.status.toLowerCase() === 'completed' : task;
     }
 
     return (
@@ -14,12 +54,12 @@ const Problem1 = () => {
             <div className="row justify-content-center mt-5">
                 <h4 className='text-center text-uppercase mb-5'>Problem-1</h4>
                 <div className="col-6 ">
-                    <form className="row gy-2 gx-3 align-items-center mb-4">
+                    <form onSubmit={submitTaskHandler} className="row gy-2 gx-3 align-items-center mb-4">
                         <div className="col-auto">
-                            <input type="text" className="form-control" placeholder="Name"/>
+                            <input value={name} onChange={e => setName(e.target.value)} type="text" className="form-control" placeholder="Name"/>
                         </div>
                         <div className="col-auto">
-                            <input type="text" className="form-control" placeholder="Status"/>
+                            <input value={status} onChange={e => setStatus(e.target.value)} type="text" className="form-control" placeholder="Status"/>
                         </div>
                         <div className="col-auto">
                             <button type="submit" className="btn btn-primary">Submit</button>
@@ -47,7 +87,14 @@ const Problem1 = () => {
                         </tr>
                         </thead>
                         <tbody>
-                        
+                            {
+                                tasks
+                                .filter(filterTasks)
+                                .map((task, index) => <tr key={index}>
+                                    <td>{task.name}</td>
+                                    <td>{task.status}</td>
+                                </tr>)
+                            }
                         </tbody>
                     </table>
                 </div>
