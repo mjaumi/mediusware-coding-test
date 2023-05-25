@@ -1,0 +1,18 @@
+.btn-A {
+    background-color: #46139f;
+    color: white;
+}
+
+.btn-B {
+    background-color: #ff7150;
+}
+
+.btn-C {
+    border: 1px solid #46139f;
+    background-color: white;
+}
+
+.btn-C:hover {
+    background-color: #46139f;
+    color: white;
+}

@@ -40,10 +40,12 @@ const Problem1 = () => {
         }
     }
 
+    // sorting tasks when 'all' button is activated
     if(show === 'all'){
         tasks.sort((task1, task2) => sortTask(task1.status) -  sortTask(task2.status));
     } 
 
+    // this function is to filter the tasks
     const filterTasks = task => {
         return show === 'active' ? task.status.toLowerCase() === 'active' : show === 'completed' ? task.status.toLowerCase() === 'completed' : task;
     }
